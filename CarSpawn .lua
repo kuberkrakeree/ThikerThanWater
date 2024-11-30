@@ -1,4 +1,5 @@
 local ScreenGui = Instance.new("ScreenGui")
+local ScreenGui = Instance.new("ScreenGui")
 local Main = Instance.new("Frame")
 local Vehicle = Instance.new("TextLabel")
 local CurColor = Instance.new("TextLabel")

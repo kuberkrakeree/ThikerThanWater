@@ -5078,7 +5078,7 @@ end
 
 --#endregion
 
-
+--[[
 --#region Slot Names
 if not isfile('ButtersSlotNames.cfg') then
     local DefaultSlotNames = {}
@@ -5122,7 +5122,7 @@ end
 
 local SlotNamesOld = HttpService:JSONDecode(readfile('ButtersSlotNames.cfg'))
 --#endregion
-
+--]]
 
 --#region Hard Dragger
 function Dragger()

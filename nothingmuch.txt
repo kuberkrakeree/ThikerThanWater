@@ -2581,6 +2581,51 @@ local function CreateGui()
 				end
 
 			end
+		end 
+		local function stopfly()
+			Flying = false
+			CONTROL = {F=0,B=0,L=0,R=0}
+			lCONTROL = {F=0,B=0,L=0,R=0}
+
+			local char = game.Players.LocalPlayer.Character
+			local hum = char and char:FindFirstChildOfClass("Humanoid")
+			local root = char and char:FindFirstChild("HumanoidRootPart")
+
+			if root then
+				-- create a BodyPosition to control descent
+				local bp = Instance.new("BodyPosition")
+				bp.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+				bp.P = 2000
+				bp.D = 100
+				bp.Position = root.Position
+				bp.Parent = root
+
+				-- raycast to find ground below
+				local ray = workspace:Raycast(root.Position, Vector3.new(0,-100,0))
+				local groundY = ray and ray.Position.Y or root.Position.Y
+
+				-- tween the BodyPosition down to ground level
+				local goal = {Position = Vector3.new(root.Position.X, groundY + 3, root.Position.Z)}
+				local tween = TweenService:Create(bp, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), goal)
+				tween:Play()
+
+				tween.Completed:Connect(function()
+					bp:Destroy()
+					if hum then
+						hum.PlatformStand = false
+						hum:ChangeState(Enum.HumanoidStateType.Running)
+					end
+					root.Velocity = Vector3.new(0,0,0)
+				end)
+			else
+				if hum then
+					hum.PlatformStand = false
+					hum:ChangeState(Enum.HumanoidStateType.Running)
+				end
+			end
+			
+			
+			
 		end
 	local function CreateFrame()
 		-- Title frame
@@ -2871,7 +2916,7 @@ local function CreateGui()
 								Fly(SlideValues)
 							else
 								Flying = false
-								Fly(SlideValues)
+								stopfly()
 							end
 						end
 						if Text.Text == "Infinite Jump" then
@@ -3201,4 +3246,6 @@ if Success then
 end
 end
 createbloodlogo()
+
+
 
